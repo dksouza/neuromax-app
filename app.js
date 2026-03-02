@@ -20,6 +20,11 @@ const modulesData = [
         id: 3,
         title: "BONUS 2",
         embedUrl: "https://natural-biohacking-guide-tkrpdnw.gamma.site/"
+    },
+    {
+        id: 3,
+        title: "The Turmeric Brain Support Recipe Collection",
+        embedUrl: "https://turmeric-brain-recipes-9kbj6nn.gamma.site/"
     }
 ];
 
