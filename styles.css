@@ -289,3 +289,98 @@ body.module-view-active .pdf-container {
     height: auto;
     border-radius: 12px;
 }
+
+/* Daily Cognitive Tracker */
+.tracker-card {
+    background-color: var(--card-bg);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    margin-bottom: 30px;
+    border: 2px solid #E2E8F0;
+}
+
+.tracker-card h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.tracker-card p {
+    font-size: 1.15rem;
+    margin-bottom: 20px;
+    color: var(--text-muted);
+}
+
+.tracker-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.tracker-item {
+    display: flex;
+    align-items: center;
+    background-color: #EDF2F7;
+    padding: 16px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.tracker-item:hover {
+    background-color: #E2E8F0;
+}
+
+.tracker-item:focus-within {
+    outline: 3px solid var(--primary-hover);
+    outline-offset: 2px;
+}
+
+.tracker-item input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+    margin-right: 16px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+}
+
+.tracker-item span {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.tracker-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #E2E8F0;
+}
+
+#tracker-progress {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.btn-reset {
+    background-color: transparent;
+    color: var(--text-muted);
+    border: 1px solid #CBD5E0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-reset:hover {
+    background-color: #F7FAFC;
+    color: var(--text-color);
+    border-color: #A0AEC0;
+}

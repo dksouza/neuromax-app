@@ -76,6 +76,33 @@ function renderLogin() {
     });
 }
 
+function getTodayDateString() {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+}
+
+function initTrackerData() {
+    const date = getTodayDateString();
+    const storedDate = localStorage.getItem('neuromax_tracker_date');
+    if (storedDate !== date) {
+        localStorage.setItem('neuromax_tracker_date', date);
+        localStorage.setItem('neuromax_tracker_state', JSON.stringify([false, false, false, false]));
+    }
+}
+
+function getTrackerState() {
+    initTrackerData();
+    try {
+        return JSON.parse(localStorage.getItem('neuromax_tracker_state')) || [false, false, false, false];
+    } catch {
+        return [false, false, false, false];
+    }
+}
+
+function saveTrackerState(state) {
+    localStorage.setItem('neuromax_tracker_state', JSON.stringify(state));
+}
+
 function renderHome() {
     let cardsHtml = '';
     modulesData.forEach(mod => {
@@ -87,6 +114,38 @@ function renderHome() {
         `;
     });
 
+    const state = getTrackerState();
+    const completedCount = state.filter(Boolean).length;
+
+    const trackerHtml = `
+        <div class="tracker-card">
+            <h3>Today’s Cognitive Check-In</h3>
+            <p>Check off what you completed today.</p>
+            <div class="tracker-list">
+                <label class="tracker-item">
+                    <input type="checkbox" class="tracker-cb" data-index="0" ${state[0] ? 'checked' : ''}>
+                    <span>Morning Activation</span>
+                </label>
+                <label class="tracker-item">
+                    <input type="checkbox" class="tracker-cb" data-index="1" ${state[1] ? 'checked' : ''}>
+                    <span>Focus Session</span>
+                </label>
+                <label class="tracker-item">
+                    <input type="checkbox" class="tracker-cb" data-index="2" ${state[2] ? 'checked' : ''}>
+                    <span>Brain Exercise</span>
+                </label>
+                <label class="tracker-item">
+                    <input type="checkbox" class="tracker-cb" data-index="3" ${state[3] ? 'checked' : ''}>
+                    <span>Slept 7+ Hours</span>
+                </label>
+            </div>
+            <div class="tracker-footer">
+                <span id="tracker-progress">Progress: ${completedCount} / 4 completed</span>
+                <button id="tracker-reset" class="btn-reset">Reset Today</button>
+            </div>
+        </div>
+    `;
+
     const html = `
         <div class="home-header">
             <div class="home-header-top">
@@ -95,6 +154,7 @@ function renderHome() {
             </div>
             <h2>Your Modules</h2>
         </div>
+        ${trackerHtml}
         <div class="module-list">
             ${cardsHtml}
         </div>
@@ -105,6 +165,28 @@ function renderHome() {
         localStorage.removeItem('neuromax_entered');
         window.location.hash = '#/login';
         window.scrollTo(0, 0);
+    });
+
+    const checkboxes = document.querySelectorAll('.tracker-cb');
+    const progressEl = document.getElementById('tracker-progress');
+
+    checkboxes.forEach(cb => {
+        cb.addEventListener('change', (e) => {
+            const index = parseInt(e.target.dataset.index, 10);
+            const currentState = getTrackerState();
+            currentState[index] = e.target.checked;
+            saveTrackerState(currentState);
+
+            const newCount = currentState.filter(Boolean).length;
+            progressEl.textContent = `Progress: ${newCount} / 4 completed`;
+        });
+    });
+
+    document.getElementById('tracker-reset').addEventListener('click', () => {
+        const newState = [false, false, false, false];
+        saveTrackerState(newState);
+        checkboxes.forEach(cb => cb.checked = false);
+        progressEl.textContent = 'Progress: 0 / 4 completed';
     });
 }
 
